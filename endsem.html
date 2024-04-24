@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanban Board</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-around;
+        padding: 20px;
+    }
+
+    .column {
+        flex: 1;
+        background-color: #8ff03b;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 0 10px;
+    }
+
+    .column-header {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .task {
+        background-color: #fff;
+        border: 1px solid #e92323;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .task:hover {
+        background-color: #f9f9f9;
+    }
+
+    .task-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="column" id="todo">
+        <div class="column-header">To Do</div>
+    </div>
+    <div class="column" id="doing">
+        <div class="column-header">Doing</div>
+    </div>
+    <div class="column" id="done">
+        <div class="column-header">Done</div>
+    </div>
+</div>
+
+<script>
+    const tasks = [
+        { id: 1, title: 'Need to write exam', status: 'todo' },
+        { id: 2, title: 'Get Hallticket', status: 'todo' },
+        { id: 3, title: 'Writing exam', status: 'doing' },
+        { id: 4, title: 'Bought Hallticket', status: 'done' },
+        { id: 5, title: 'Completed exam', status: 'done' }
+    ];
+
+    const renderTasks = () => {
+        const todoColumn = document.getElementById('todo');
+        const doingColumn = document.getElementById('doing');
+        const doneColumn = document.getElementById('done');
+
+        todoColumn.innerHTML = '<div class="column-header">To Do</div>';
+        doingColumn.innerHTML = '<div class="column-header">Doing</div>';
+        doneColumn.innerHTML = '<div class="column-header">Done</div>';
+
+        tasks.forEach(task => {
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task';
+            taskElement.innerHTML = `<div class="task-title">${task.title}</div>`;
+            taskElement.addEventListener('click', () => moveTask(task.id));
+            if (task.status === 'todo') {
+                todoColumn.appendChild(taskElement);
+            } else if (task.status === 'doing') {
+                doingColumn.appendChild(taskElement);
+            } else if (task.status === 'done') {
+                doneColumn.appendChild(taskElement);
+            }
+        });
+    };
+
+    const moveTask = (taskId) => {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        if (task.status === 'todo') {
+            task.status = 'doing';
+        } else if (task.status === 'doing') {
+            task.status = 'done';
+        }
+
+        renderTasks();
+    };
+
+    renderTasks();
+</script>
+</body>
+</html>
